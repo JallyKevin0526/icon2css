@@ -1,2 +1,2 @@
 # icon2css
-a project for icon or bg change to css
+a Node.js project use express.js for icon or bg change to css
