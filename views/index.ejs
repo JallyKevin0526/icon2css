@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>工具</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <form enctype="multipart/form-data" action="http://localhost:3000/file/icon2css" method="post">
+      <div>
+        <label for="num">序号</label><input name="num" id="num" type="number" />
+      </div>
+      <div>
+        <label for="file">文件</label><input multiple id="file" name="upfile" type="file" />
+      </div>
+      <button type="submit">提交</button>
+    </form>
+  </body>
+</html>
