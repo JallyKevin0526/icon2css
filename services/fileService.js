@@ -12,6 +12,7 @@ class fileService {
         this.form.multiples = true
         this.form.uploadDir = path.join(__dirname, '../files')
         this.foo = ''
+        this.flag = 0
     }
 
     icon2Css(req, res) {
@@ -23,11 +24,11 @@ class fileService {
         this.form.on('file', function (filed, file) {
             allFile.push([filed, file]);//收集传过来的所有文件
         }).parse(req, async (err, fields, files) => {
-            let num = fields.num || 0
+            let num = parseInt(fields.num) || 0
             let len = allFile.length
+            console.log(allFile.length)
             for (let k = num; k < len; k++) {
                 let arr = this.updateName(allFile[k][1], k)
-                console.log(11)
                 await fs.rename(arr[1], arr[0], err => {
                     if (err) {
                         return res.json({
@@ -37,24 +38,28 @@ class fileService {
                         })
                     }
                     this.getPix(arr[0]).then(res => {
-                        this.css(res, k, arr[2])
+                        this.css(res, k, arr[2], len)
                     })
                 })
             }
         })
     }
 
-    css(pix, k, ext) {
-        console.log(pix)
+    css(pix, k, ext, len) {
         let str = `.icon_${k} {
-    width: ${pix[0] / 20}rem;
-    height: ${pix[1] / 20}rem;
-    background: url("@/assets/images/icon/${k}${ext}") no-repeat center;
+    width: ${pix[0] / 40}rem;
+    height: ${pix[1] / 40}rem;
+    background: url("../images/icon/${k}${ext}") no-repeat center;
     background-size: 100% 100%
 }
 `
         this.foo += str
-        this.createFile()
+        console.log(k, len)
+        this.flag += 1
+        if (this.flag == len) {
+            this.foo = `/*当前序号${len - 1}*/\n` + this.foo
+            this.createFile()
+        }
     }
 
     createFile() {
